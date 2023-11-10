@@ -1,20 +1,36 @@
 version: 0.2
+
 phases:
-  install:  # Start of the install phase
+  install:
     runtime-versions:
-      python: 3.11  # Specifies the Python version
-    commands:  # List of commands to run
+      python: 3.11
+    commands:
       - echo "Installing dependencies..."
       - pip install -r requirements.txt -t lib
-  build:  # Start of the build phase
-    commands:  # List of commands for the build phase
+
+  build:
+    commands:
       - echo "Zipping deployment package..."
       - cd lib
+      - echo "Current directory: $(pwd)"
+      - echo "Directory contents before zipping:"
+      - ls -la
       - zip -r9 ../deployment_package.zip .
       - cd ..
+      - echo "Adding lambda_function.py to the zip..."
       - zip -g deployment_package.zip lambda_function.py
-  post_build:  # Start of the post-build phase
-    commands:  # Commands for post-build
+      - echo "Deployment package contents:"
+      - unzip -l deployment_package.zip
+
+  post_build:
+    commands:
       - echo "Updating lambda Function..."
+      - echo "Checking if deployment_package.zip exists:"
+      - ls -la deployment_package.zip
       - aws lambda update-function-code --function-name github-to-lambda-demo --zip-file fileb://deployment_package.zip
+      - echo "Lambda function update complete."
       - echo "DONE!!"
+
+artifacts:
+  files:
+    - deployment_package.zip
