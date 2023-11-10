@@ -1,0 +1,20 @@
+version: 0.2
+phases:
+  install:  # Start of the install phase
+    runtime-versions:
+      python: 3.8  # Specifies the Python version
+    commands:  # List of commands to run
+      - echo "Installing dependencies..."
+      - pip install -r requirements.txt -t lib
+  build:  # Start of the build phase
+    commands:  # List of commands for the build phase
+      - echo "Zipping deployment package..."
+      - cd lib
+      - zip -r9 ../deployment_package.zip .
+      - cd ..
+      - zip -g deployment_package.zip lambda_function.py
+  post_build:  # Start of the post-build phase
+    commands:  # Commands for post-build
+      - echo "Updating lambda Function..."
+      - aws lambda update-function-code --function-name github-to-lambda-demo --zip-file fileb://deployment_package.zip
+      - echo "DONE!!"
