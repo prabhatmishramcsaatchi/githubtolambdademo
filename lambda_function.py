@@ -5,4 +5,5 @@ def lambda_handler(event, context):
     df = pd.DataFrame(data=d)
     print(df)
     print('Done x1.1')
-    print("hi all wehfkfkjlkk")
+    print("hi all wehfkjlkjlkjfkjhkjkjlkk")
+    print("hi hi all")
