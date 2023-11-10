@@ -2,7 +2,7 @@ version: 0.2
 phases:
   install:  # Start of the install phase
     runtime-versions:
-      python: 3.8  # Specifies the Python version
+      python: 3.11  # Specifies the Python version
     commands:  # List of commands to run
       - echo "Installing dependencies..."
       - pip install -r requirements.txt -t lib
